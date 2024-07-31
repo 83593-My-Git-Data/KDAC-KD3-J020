@@ -12,9 +12,6 @@ export function Navbar() {
           <li className="nav-item">
             <Link className="nav-link " aria-current="page" to="/home">Home</Link>
           </li>
-
-          
-
           <li>
           <Link className="nav-link " aria-current="page" to="/aboutUs">About Us</Link>
           </li>
