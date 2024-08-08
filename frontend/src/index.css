@@ -1,0 +1,66 @@
+@import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.page-header {
+  text-align: center;
+  margin: 10px;
+}
+
+.image:hover {
+  box-shadow: 4px 4px 4px 4px rgba(100, 101, 101, 0.5);
+  color: black;
+}
+
+.more {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-family: "Merriweather", serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+footer {
+  margin: 10px 10px 0px 10px
+}
+
+footer img {
+  margin-left: 40px;
+}
+
+.copyright {
+  justify-content: center;
+  text-align: center;
+  margin-top: 16px;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-style: italic;
+  color: rgb(5, 42, 116);
+  margin-left: 80px;
+
+}
+
+.icons a {
+  font-size: 30px;
+  color: rgb(5, 42, 116);
+  margin-left: 20px;
+}
+
+.icons a:hover {
+  color: rgb(49, 118, 255);
+  transition: all 0.2s ease;
+  text-shadow: 2px 2px 4px rgb(5, 42, 116);
+}
