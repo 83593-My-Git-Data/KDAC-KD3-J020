@@ -1,0 +1,47 @@
+//package com.app.entities;
+//
+//import javax.persistence.Column;
+//import javax.persistence.Entity;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.GenerationType;
+//import javax.persistence.Id;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.ManyToOne;
+//import javax.persistence.Table;
+//
+//import lombok.AllArgsConstructor;
+//import lombok.Getter;
+//import lombok.NoArgsConstructor;
+//import lombok.Setter;
+//import lombok.ToString;
+//
+//@Entity
+//@Table(name = "auction")
+//@Getter
+//@Setter
+//@ToString
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class Auction extends BaseEntity {
+//
+//	@ManyToOne
+//	@JoinColumn(name = "player_id")
+//	private Player player;
+//
+//	@ManyToOne
+//	@JoinColumn(name = "client_id")
+//	private User client;
+//	
+//	@Column(name = "client_name")
+//	private String clientName;
+//	
+//	@Column(name = "base_price")
+//	private Double basePrice;
+//	
+//	@Column(name = "bid_time")
+//    private Long bidTime;
+//	
+//	@ManyToOne
+//	@JoinColumn(name = "bidding_price")
+//	private Player biddingPrice;
+//}

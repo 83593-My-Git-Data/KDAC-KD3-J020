@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="footballServer"/>
+<aop-project name="spring_boot_backend_template"/>
+<aop-project name="day16_blogs_api"/>
+<aop-project name="TourNest"/>
+</aop-reference-model>

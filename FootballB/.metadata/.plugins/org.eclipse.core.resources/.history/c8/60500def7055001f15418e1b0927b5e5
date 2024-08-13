@@ -1,0 +1,107 @@
+package com.app.services;
+
+import com.app.entities.Bid;
+import com.app.entities.Player;
+import com.app.entities.Team;
+import com.app.repositories.BidRepository;
+import com.app.repositories.PlayerRepository;
+import com.app.repositories.TeamRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ManageAuctionServiceImpl implements ManageAuctionService {
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    @Autowired
+    private TeamRepository teamRepository;
+
+    @Autowired
+    private BidRepository bidRepository;
+
+    /**
+     * Places a bid for a player by a team.
+     *
+     * @param userId    the ID of the team (assumed to be mapped to a user)
+     * @param playerId  the ID of the player to place a bid on
+     * @param bidAmount the amount of the bid
+     */
+    @Override
+    public void placeBid(Long userId, Long playerId, Double bidAmount) {
+        // Fetch the player and team (assuming userId maps to teamId in your scenario)
+        Optional<Player> playerOpt = playerRepository.findById(playerId);
+        Optional<Team> teamOpt = teamRepository.findById(userId);
+
+        // If both the player and team exist, create and save a new bid
+        if (playerOpt.isPresent() && teamOpt.isPresent()) {
+            Player player = playerOpt.get();
+            Team team = teamOpt.get();
+
+            Bid bid = new Bid();
+            bid.setPlayer(player);
+            bid.setTeam(team);
+            bid.setPrice(bidAmount);
+
+            bidRepository.save(bid);
+        }
+    }
+
+    /**
+     * Retrieves the highest bid for a given player.
+     *
+     * @param playerId the ID of the player
+     * @return the highest bid amount, or 0.0 if no bids are found
+     */
+    @Override
+    public Double getCurrentHighestBid(Long playerId) {
+        return bidRepository.findHighestBidForPlayer(playerId)
+                            .map(Bid::getPrice)
+                            .orElse(0.0);
+    }
+
+    /**
+     * Retrieves the ID of the highest bidder for a given player.
+     *
+     * @param playerId the ID of the player
+     * @return the ID of the highest bidder, or null if no bids are found
+     */
+    @Override
+    public Long getCurrentHighestBidder(Long playerId) {
+        return bidRepository.findHighestBidForPlayer(playerId)
+                            .map(bid -> bid.getTeam().getId()) // Assuming the highest bidder is the team
+                            .orElse(null);
+    }
+
+    /**
+     * Finalizes the auction by assigning players to the teams with the highest bids.
+     */
+    @Override
+    public void finalizeAuction() {
+        // Retrieve the highest bids for all players
+        List<Bid> highestBids = bidRepository.findHighestBidsForAllPlayers();
+
+        // Assign each player to the team with the highest bid
+        for (Bid bid : highestBids) {
+            Player player = bid.getPlayer();
+            Team team = bid.getTeam();
+            player.setTeam(team); // Assign the player to the team
+            playerRepository.save(player); // Save the updated player
+        }
+    }
+
+    /**
+     * Retrieves all players associated with a given team.
+     *
+     * @param teamId the ID of the team
+     * @return a list of players on the team
+     */
+    @Override
+    public List<Player> getPlayersForTeam(Long teamId) {
+        return playerRepository.findByTeamId(teamId);
+    }
+}

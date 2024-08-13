@@ -1,0 +1,21 @@
+package com.app.repositories;
+
+import com.app.entities.Bid;
+import com.app.entities.Player;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface BidRepository extends JpaRepository<Bid, Long> {
+
+    @Query("SELECT b FROM Bid b WHERE b.player.id = :playerId ORDER BY b.price DESC")
+    Optional<Bid> findHighestBidForPlayer(Long playerId);
+
+    @Query("SELECT b FROM Bid b WHERE b.price = (SELECT MAX(b2.price) FROM Bid b2 WHERE b2.player = b.player)")
+    List<Bid> findHighestBidsForAllPlayers();
+
+	List<Player> findPlayersByTeamId(Long teamId);
+}

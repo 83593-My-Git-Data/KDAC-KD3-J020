@@ -1,0 +1,33 @@
+package com.app.entities;
+
+import javax.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "bids")
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class Bid extends BaseEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
+
+    @ManyToOne
+    @JoinColumn(name = "player_id", nullable = false)
+    private Player player;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(name = "bidAmount", nullable = false)
+    private double bidAmount;
+
+    // Optional: You can add a timestamp if you want to track when the bid was placed.
+    // @Column(name = "bid_time", nullable = false)
+    // private LocalDateTime bidTime;
+}
