@@ -1,0 +1,51 @@
+package com.app.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.app.entities.Player;
+import com.app.services.ManageAuctionService;
+
+@RestController
+@RequestMapping("/api/auctions")
+public class ManageAuctionControlller {
+
+    @Autowired
+    private ManageAuctionService manageAuctionService;
+
+    @PostMapping("/bids")
+    public ResponseEntity<Void> placeBid(@RequestParam Long userId, @RequestParam Long playerId, @RequestParam Double bidAmount) {
+        manageAuctionService.placeBid(userId, playerId, bidAmount);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/bids/highest")
+    public ResponseEntity<Double> getCurrentHighestBid(@RequestParam Long playerId) {
+        Double highestBid = manageAuctionService.getCurrentHighestBid(playerId);
+        return ResponseEntity.ok(highestBid);
+    }
+
+    @GetMapping("/bids/highest-bidder")
+    public ResponseEntity<Long> getCurrentHighestBidder(@RequestParam Long playerId) {
+        Long highestBidderId = manageAuctionService.getCurrentHighestBidder(playerId);
+        return ResponseEntity.ok(highestBidderId);
+    }
+
+    @PostMapping("/finalize")
+    public ResponseEntity<Void> finalizeAuction() {
+        manageAuctionService.finalizeAuction();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/teams/{teamId}/players")
+    public ResponseEntity<List<Player>> getPlayersForTeam(@PathVariable Long teamId) {
+        List<Player> players = manageAuctionService.getPlayersForTeam(teamId);
+        if (players.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(players);
+    }
+}

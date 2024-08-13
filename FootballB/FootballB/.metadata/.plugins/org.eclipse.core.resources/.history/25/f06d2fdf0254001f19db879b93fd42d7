@@ -1,0 +1,17 @@
+package com.app.entities;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
+public class Team extends BaseEntity {
+	@Column(name = "team_name", length = 20, nullable = false)
+	private String teamName;
+	
+	@Column(name = "email_id", length = 30, unique = true, nullable = false)
+	private String emailId;
+	
+	@OneToMany
+	@JoinColumn(name = "player_id")
+	private Player player;
+}
