@@ -1,0 +1,23 @@
+package com.app.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.app.entities.Player;
+import com.app.services.ManageAuctionService;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/players")
+public class ManageAuctionControlller {
+
+	 @Autowired
+	    private ManageAuctionService auctionService;
+
+	    @PostMapping("/processBids")
+	    public void processBids(@RequestBody Map<Long, Double> bids) {
+	        auctionService.processBids(bids);
+	    }
+}

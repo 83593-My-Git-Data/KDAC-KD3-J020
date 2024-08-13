@@ -1,0 +1,86 @@
+package com.app.services;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.app.entities.Player;
+import com.app.entities.Team;
+import com.app.entities.User;
+import com.app.repositories.PlayerRepository;
+import com.app.repositories.TeamRepository;
+import com.app.repositories.UserRepository;
+
+import java.util.Optional;
+
+@Service
+public class ManageAuctionServiceImpl implements ManageAuctionService  {
+
+    private Map<Long, Map<Long, Double>> playerBids = new HashMap<>();
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    @Autowired
+    private TeamRepository teamRepository;
+
+    @Override
+    public void placeBid(Long userId, Long playerId, Double bidAmount) {
+        // Logic to place a bid for a player by a user
+        playerBids.computeIfAbsent(playerId, k -> new HashMap<>()).put(userId, bidAmount);
+    }
+
+    @Override
+    public Double getCurrentHighestBid(Long playerId) {
+        // Logic to get the current highest bid for a player
+        return playerBids.getOrDefault(playerId, new HashMap<>())
+                         .values()
+                         .stream()
+                         .max(Double::compareTo)
+                         .orElse(0.0);
+    }
+
+    @Override
+    public Long getCurrentHighestBidder(Long playerId) {
+        // Logic to get the current highest bidder for a player
+        return playerBids.getOrDefault(playerId, new HashMap<>())
+                         .entrySet()
+                         .stream()
+                         .max(Map.Entry.comparingByValue())
+                         .map(Map.Entry::getKey)
+                         .orElse(null);
+    }
+
+    @Override
+    public void finalizeAuction() {
+        // Logic to finalize the auction and assign players to teams
+        for (Map.Entry<Long, Map<Long, Double>> entry : playerBids.entrySet()) {
+            Long playerId = entry.getKey();
+            Long highestBidderId = getCurrentHighestBidder(playerId);
+            Double highestBid = getCurrentHighestBid(playerId);
+
+            if (highestBidderId != null) {
+                Optional<Player> playerOpt = playerRepository.findById(playerId);
+                Optional<Team> teamOpt = teamRepository.findById(highestBidderId);
+
+                if (playerOpt.isPresent() && teamOpt.isPresent()) {
+                    Player player = playerOpt.get();
+                    Team team = teamOpt.get();
+
+                    player.setTeam(team); // Set the team for the player
+                    playerRepository.save(player); // Persist the player with the assigned team
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Player> getPlayersForTeam(Long teamId) {
+        return playerRepository.findByTeamId(teamId);
+    }
+}

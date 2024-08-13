@@ -1,0 +1,77 @@
+package com.app.controllers;
+
+import com.app.services.ManageAuctionService;
+import com.app.entities.Auction;
+import com.app.entities.Player;
+import com.app.entities.User;
+import com.app.repositories.AuctionRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/manage-auction")
+public class ManageAuctionControlller {
+
+    @Autowired
+    private ManageAuctionService manageAuctionService;
+
+    @Autowired
+    private AuctionRepository finalAuctionRepository;
+
+    // Place a bid for a player
+    @PostMapping("/place-bid")
+    public ResponseEntity<String> placeBid(
+            @RequestParam Long userId,
+            @RequestParam Long playerId,
+            @RequestParam Double bidAmount) {
+        manageAuctionService.placeBid(userId, playerId, bidAmount);
+        return ResponseEntity.ok("Bid placed successfully.");
+    }
+
+    // Retrieve the current highest bid for a player
+    @GetMapping("/highest-bid")
+    public ResponseEntity<Double> getCurrentHighestBid(@RequestParam Long playerId) {
+        Double highestBid = manageAuctionService.getCurrentHighestBid(playerId);
+        return ResponseEntity.ok(highestBid);
+    }
+
+    // Retrieve the user ID of the highest bidder for a player
+    @GetMapping("/highest-bidder")
+    public ResponseEntity<Long> getCurrentHighestBidder(@RequestParam Long playerId) {
+        Long highestBidderId = manageAuctionService.getCurrentHighestBidder(playerId);
+        return ResponseEntity.ok(highestBidderId);
+    }
+
+    // Finalize the auction by assigning players to the teams with the highest bids
+    @PostMapping("/finalize")
+    public ResponseEntity<String> finalizeAuction() {
+        manageAuctionService.finalizeAuction();
+        return ResponseEntity.ok("Auction finalized successfully.");
+    }
+
+    // Create a new final auction entry
+    @PostMapping("/final-auction")
+    public ResponseEntity<Auction> createFinalAuction(@RequestBody FinalAuction finalAuction) {
+        Auction savedFinalAuction = finalAuctionRepository.save(finalAuction);
+        return ResponseEntity.ok(savedFinalAuction);
+    }
+
+    // Retrieve a final auction entry by ID
+    @GetMapping("/final-auction/{id}")
+    public ResponseEntity<Auction> getFinalAuction(@PathVariable Long id) {
+        return finalAuctionRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Optionally, add a method to get all final auction entries
+    @GetMapping("/final-auctions")
+    public ResponseEntity<List<Auction>> getAllFinalAuctions() {
+        List<Auction> finalAuctions = finalAuctionRepository.findAll();
+        return ResponseEntity.ok(finalAuctions);
+    }
+}
