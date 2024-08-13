@@ -35,16 +35,7 @@ function Navbar() {
                 About Us
               </Link>
             </li>
-            <li className='nav-item'>
-              <Link
-                to='/clients'
-                className='nav-link'
-                aria-current='page'
-                href='#'
-              >
-                Clients
-              </Link>
-            </li>
+  
             <li className='nav-item'>
               <Link
                 to='/managePlayers'

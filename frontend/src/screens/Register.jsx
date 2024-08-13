@@ -1,27 +1,35 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { register } from '../services/admin'
+import {  registerUser } from '../services/user'
+import BG from "../images/background.jpg";
+import Navbar from '../components/navbar'
+import Footer from '../components/footer'
+
 
 function Register() {
-  const [clientName, setClientName] = useState('')
-  const [teamName, setTeamName] = useState('')
-  const [mobileNo, setmobileNo] = useState('')
-  const [email, setEmail] = useState('')
+
+  const [name, setName] = useState('')
+  const [phoneNo, setmobileNo] = useState('')
+  const [emailId, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [teamName, setTeamName] = useState('')
+  
+  const role = "ROLE_CLIENT"
 
   // get the navigation hook
   const navigate = useNavigate()
 
   const onRegister = async () => {
-    if (clientName.length == 0) {
+    if (name.length == 0) {
       toast.error('please enter first name')
-    } else if (teamName.length == 0) {
-      toast.error('please enter last name')
-    } else if (mobileNo.length == 0) {
+    }else if (teamName.length == 0) {
+      toast.warning('enter team name number')
+    }
+     else if (phoneNo.length == 0) {
       toast.warning('enter mobile number')
-    } else if (email.length == 0) {
+    } else if (emailId.length == 0) {
       toast.error('please enter email')
     } else if (password.length == 0) {
       toast.error('please enter password')
@@ -30,9 +38,11 @@ function Register() {
     } else if (password != confirmPassword) {
       toast.error('password does not match')
     } else {
+      
       // call post /admin/register api
-      const result = await register(clientName, teamName, email, password)
-      if (result['status'] == 'success') {
+      const result = await registerUser(name,phoneNo, emailId, password,confirmPassword,role ,teamName)
+      console.log(name,phoneNo, emailId, password,confirmPassword,role, teamName);
+      if (result) {
         toast.success('Successfully registered a new user')
         navigate('/login')
       } else {
@@ -43,6 +53,15 @@ function Register() {
 
   return (
     <div>
+      
+      <Navbar />
+      
+      <div style={{ 
+        backgroundImage: `url(${BG})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh'
+      }}>
       <h2 className='page-header'>Register</h2>
       <div className='row'>
         <div className='col'></div>
@@ -51,19 +70,19 @@ function Register() {
             <div className='mb-3'>
               <label htmlFor=''>Client Name</label>
               <input
-                onChange={(e) => setClientName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 type='text'
                 className='form-control'
               />
             </div>
-            <div className='mb-3'>
+             <div className='mb-3'>
               <label htmlFor=''>Team Name</label>
               <input
                 onChange={(e) => setTeamName(e.target.value)}
                 type='text'
                 className='form-control'
               />
-            </div>
+            </div> 
             <div className='mb-3'>
                 <label htmlFor=''>Mobile Number</label>
                 <input
@@ -97,6 +116,10 @@ function Register() {
                 className='form-control'
               />
             </div>
+            <input
+              type='hidden'
+              value={role}
+            />
             <div className='mb-3'>
               <div>
                 Already have an account ? <Link to='/login'>Login here</Link>
@@ -109,6 +132,8 @@ function Register() {
         </div>
         <div className='col'></div>
       </div>
+      </div>
+      <Footer />
     </div>
   )
 }

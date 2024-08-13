@@ -7,6 +7,7 @@ export function ClientDashboard() {
         <Navbar />
         <div className='container'>
         <h1 className='title'>Client Dashboard</h1>
+
         </div>
 
     </>

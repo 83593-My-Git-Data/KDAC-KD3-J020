@@ -20,12 +20,14 @@ import ManagePlayers from './screens/ManagePlayers'
 import ManageAuction from './screens/ManageAuction'
 import AttendAuction from './screens/AttendAuction'
 import ViewSchedule from './screens/ViewSchedule'
+import PlayerDetails from './screens/PlayerDetails'
+import AddPlayers from './screens/AddPlayers'
 
 function App() {
   return (
     <div className='container-fluid'>
       <Routes>
-        <Route path='' element={<Login />} />
+        <Route path='' element={<Home />} />
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
         <Route path='home' element={<Home />} />
@@ -34,6 +36,7 @@ function App() {
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path="/clientDashboard" element={<ClientDashboard />} />
         <Route path="/players" element={<Players />} />
+        <Route path='add-players' element={<AddPlayers />} />
         <Route path="/tournament" element={<Tournament />} />
         <Route path="/clients" element={<Clients />} />
         <Route path="/auction" element={<Auction />} />
@@ -44,6 +47,7 @@ function App() {
         <Route path="/manageAuction" element={<ManageAuction />} />
         <Route path="/attendAuction" element={<AttendAuction />} />
         <Route path="/viewSchedule" element={<ViewSchedule />} />
+        <Route path="/playerDetails/:id" element={<PlayerDetails />} />
         
 
       </Routes>
