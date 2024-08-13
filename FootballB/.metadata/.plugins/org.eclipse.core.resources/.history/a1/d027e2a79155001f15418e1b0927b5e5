@@ -1,0 +1,23 @@
+package com.app.services;
+
+import com.app.entities.Player;
+
+import java.util.List;
+
+public interface ManageAuctionService {
+    
+    // Method to place a bid
+    void placeBid(Long userId, Long playerId, Double bidAmount);
+
+    // Method to get the current highest bid for a player
+    Double getCurrentHighestBid(Long playerId);
+
+    // Method to get the current highest bidder for a player
+    Long getCurrentHighestBidder(Long playerId);
+
+    // Method to finalize the auction and assign players to teams
+    void finalizeAuction();
+
+    // Method to get the list of players assigned to a specific team
+    List<Player> getPlayersForTeam(Long teamId);
+}

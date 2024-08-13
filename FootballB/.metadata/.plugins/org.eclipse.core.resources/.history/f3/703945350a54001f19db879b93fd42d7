@@ -1,0 +1,27 @@
+package com.app.entities;
+
+import java.time.LocalDate;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "bidding")
+public class Bid extends BaseEntity{
+	private Team team;
+    private Player player;
+    private double price;
+    private LocalDate date;
+}

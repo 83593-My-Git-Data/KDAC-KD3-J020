@@ -1,0 +1,34 @@
+//package com.app.controllers;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.web.bind.annotation.*;
+//
+//import com.app.entities.Player;
+//import com.app.services.ManageAuctionService;
+//
+//import java.util.List;
+//
+//@RestController
+//@RequestMapping("/api/players")
+//public class ManageAuctionControlller {
+//
+//    @Autowired
+//    private ManageAuctionService manageAuctionService;
+//
+//    @GetMapping
+//    public List<Player> getAllPlayers() {
+//        return manageAuctionService.getAllPlayers();
+//    }
+//
+//    @GetMapping("/next")
+//    public Player getNextPlayer() {
+//        return manageAuctionService.getNextPlayer();
+//    }
+//
+//    @PostMapping("/bid")
+//    public void updatePlayerBid(@RequestParam Long playerId, 
+//                                @RequestParam Double bid, 
+//                                @RequestParam Long clientId) {
+//    	manageAuctionService.updatePlayerBid(playerId, bid, clientId);
+//    }
+//}

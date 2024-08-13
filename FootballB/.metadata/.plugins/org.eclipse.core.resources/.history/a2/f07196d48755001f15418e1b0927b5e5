@@ -1,0 +1,48 @@
+package com.app.entities;
+
+import javax.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "players")
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class Player extends BaseEntity {
+
+    @Column(name = "name", length = 20, nullable = false)
+    private String name;
+
+    @Column(name = "base_price", nullable = false)
+    private double basePrice;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+    
+	
+//	@Column(name = "player_age", length = 25,nullable = false)
+//	private Integer playerAge;
+//	
+//	@Column(name = "no_of_matches")
+//	private Integer noOfMatches;
+	
+//   @Transient
+//    private Double currentBidPrice;
+//
+//   @Transient
+//    private Long currentBidderId;
+   
+
+//	 public Player(Long id, String name, Double basePrice) {
+//	        this.id = id;
+//	        this.playerName = playerName;
+//	        this.basePrice = basePrice;
+//	        this.currentPrice = basePrice;
+//	        this.currentBidderId = null;
+//	    }
+
+	
+}

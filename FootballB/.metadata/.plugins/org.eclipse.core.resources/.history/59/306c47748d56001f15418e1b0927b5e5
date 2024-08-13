@@ -1,0 +1,77 @@
+package com.app.controllers;
+
+import com.app.services.ManageAuctionService;
+import com.app.entities.Player;
+import com.app.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/auctions")
+public class ManageAuctionControlller {
+
+    @Autowired
+    private ManageAuctionService manageAuctionService;
+
+    /**
+     * Places a bid for a player.
+     *
+     * @param userId    the ID of the user placing the bid
+     * @param playerId  the ID of the player being bid on
+     * @param bidAmount the amount of the bid
+     * @return a response message
+     */
+    @PostMapping("/placeBid")
+    public String placeBid(@RequestParam Long userId,
+                           @RequestParam Long playerId,
+                           @RequestParam Double bidAmount) {
+        manageAuctionService.placeBid(userId, playerId, bidAmount);
+        return "Bid placed successfully!";
+    }
+
+    /**
+     * Retrieves the current highest bid amount for a player.
+     *
+     * @param playerId the ID of the player
+     * @return the highest bid amount
+     */
+    @GetMapping("/highestBid/{playerId}")
+    public Double getCurrentHighestBid(@PathVariable Long playerId) {
+        return manageAuctionService.getCurrentHighestBid(playerId);
+    }
+
+    /**
+     * Retrieves the user ID of the highest bidder for a player.
+     *
+     * @param playerId the ID of the player
+     * @return the user ID of the highest bidder
+     */
+    @GetMapping("/highestBidder/{playerId}")
+    public Long getCurrentHighestBidder(@PathVariable Long playerId) {
+        return manageAuctionService.getCurrentHighestBidder(playerId);
+    }
+
+    /**
+     * Finalizes the auction by processing all highest bids.
+     *
+     * @return a response message
+     */
+    @PostMapping("/finalize")
+    public String finalizeAuction() {
+        manageAuctionService.finalizeAuction();
+        return "Auction finalized successfully!";
+    }
+
+    /**
+     * Retrieves all players associated with a given team.
+     *
+     * @param teamId the ID of the team
+     * @return a list of players
+     */
+    @GetMapping("/players/{teamId}")
+    public List<Player> getPlayersForTeam(@PathVariable Long teamId) {
+        return manageAuctionService.getPlayersForTeam(teamId);
+    }
+}

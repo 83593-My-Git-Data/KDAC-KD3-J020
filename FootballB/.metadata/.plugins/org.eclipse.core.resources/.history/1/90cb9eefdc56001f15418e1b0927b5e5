@@ -1,0 +1,12 @@
+package com.app.dtos;
+
+public class BidDTO {
+
+    private Long bidId;
+    private String playerName;
+    private String teamName;
+    private String userName;
+    private Double bidPrice;
+
+    // Constructors, Getters, and Setters
+}
